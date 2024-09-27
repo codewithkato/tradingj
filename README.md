@@ -1,0 +1,2 @@
+# tradingj
+Tradingjournal app
