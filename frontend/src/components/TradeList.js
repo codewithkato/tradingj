@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './TradeList.css'; // Maak dit bestand aan voor styling
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -24,23 +23,25 @@ function TradeList() {
     fetchTrades();
   }, []);
 
-  if (loading) return <div className="loading">Loading trades...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return <div className="text-center py-4">Loading trades...</div>;
+  if (error) return <div className="text-center py-4 text-red-500">{error}</div>;
 
   return (
-    <div className="trade-list">
-      <h2>Trades</h2>
+    <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <h2 className="text-2xl font-bold mb-4">Trades</h2>
       {trades.length === 0 ? (
-        <p>No trades found. Add some trades to get started!</p>
+        <p className="text-gray-700">No trades found. Add some trades to get started!</p>
       ) : (
-        <ul>
+        <ul className="space-y-4">
           {trades.map((trade) => (
-            <li key={trade._id} className="trade-item">
-              <h3>{trade.pair}</h3>
-              <p>Type: {trade.type}</p>
-              <p>Entry: ${trade.entryPrice}</p>
-              <p>Exit: ${trade.exitPrice || 'Open'}</p>
-              <p>Profit/Loss: ${trade.profitLoss ? trade.profitLoss.toFixed(2) : 'N/A'}</p>
+            <li key={trade._id} className="border-b pb-4">
+              <h3 className="text-xl font-semibold">{trade.pair}</h3>
+              <p className="text-gray-700">Type: {trade.type}</p>
+              <p className="text-gray-700">Entry: ${trade.entryPrice}</p>
+              <p className="text-gray-700">Exit: ${trade.exitPrice || 'Open'}</p>
+              <p className={`font-bold ${trade.profitLoss > 0 ? 'text-green-500' : 'text-red-500'}`}>
+                Profit/Loss: ${trade.profitLoss ? trade.profitLoss.toFixed(2) : 'N/A'}
+              </p>
             </li>
           ))}
         </ul>

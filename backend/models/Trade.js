@@ -47,7 +47,11 @@ const tradeSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ['open', 'closed'],
-    default: 'open'
+    default: 'open',
+    required: true
+  },
+  exitDate: {
+    type: Date
   }
 }, {
   timestamps: true
@@ -61,6 +65,14 @@ tradeSchema.methods.calculateProfitLoss = function() {
       : this.entryPrice - this.exitPrice;
     this.profitLoss = (difference * this.quantity) - this.fees;
   }
+};
+
+// Voeg een methode toe om een trade te sluiten
+tradeSchema.methods.closeTrade = function(exitPrice, exitDate = new Date()) {
+  this.exitPrice = exitPrice;
+  this.exitDate = exitDate;
+  this.status = 'closed';
+  this.calculateProfitLoss();
 };
 
 // Middleware om profit/loss te berekenen voor het opslaan
